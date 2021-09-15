@@ -16,15 +16,15 @@ class CreatePedidosTable extends Migration
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
 
-            $table->string('numero', 10);
+            $table->integer('numero');
             $table->enum('tipo', ['SE', 'RM']);
             $table->date('dataChegada');
-            $table->string('secretariaSolicitante', 100);
-            $table->string('projeto', 100);
+            $table->string('secretariaSolicitante');
+            $table->string('projeto');
             $table->text('descricao');
             $table->date('dataEnvioFinanceiro')->nullable();
             $table->date('dataRetornoFinanceiro')->nullable();
-            $table->string('situacaoAutorizacao', 50)->nullable();
+            $table->string('situacaoAutorizacao')->nullable();
             $table->text('observacoes')->nullable();
 
             $table->timestamps();
