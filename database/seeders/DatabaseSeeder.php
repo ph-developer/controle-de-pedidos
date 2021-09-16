@@ -3,16 +3,21 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Semeia o banco de dados com entidades para testes.
      *
      * @return void
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        DB::table('usuarios')->insert([
+            'nome' => 'Admin',
+            'email' => 'admin@controledepedidos.dev',
+            'senha' => bcrypt('admin'),
+        ]);
     }
 }
