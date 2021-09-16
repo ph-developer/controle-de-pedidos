@@ -30,4 +30,14 @@ class Usuario extends Authenticatable
     protected $hidden = [
         'senha',
     ];
+
+    /**
+     * Assessor utilizado para que o Fortify funcione corretamente.
+     *
+     * @return string
+     */
+    public function getPasswordAttribute()
+    {
+        return $this->senha;
+    }
 }
