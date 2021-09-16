@@ -88,8 +88,8 @@ class PedidoController extends Controller
             'tipo' => $tipo,
             'numero' => $numero,
         ])->firstOrFail();
-        $resultado = $pedido->delete();
+        $result = $pedido->delete();
 
-        return response()->json(compact('resultado'));
+        return response()->json(compact('result'));
     }
 }
