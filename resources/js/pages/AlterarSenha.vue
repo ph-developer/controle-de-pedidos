@@ -25,7 +25,7 @@ export default {
         async updateSenha() {
             if (this.newSenha !== this.repeatNewSenha) {
                 //TODO: mudar de alert para uma popup.
-                alert("Os campos 'Nova Senha' e 'Repetir Nova Senha' não conferem.");
+                return alert("Os campos 'Nova Senha' e 'Repetir Nova Senha' não conferem.");
             }
 
             try {
