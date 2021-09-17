@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pedido;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,8 +18,6 @@ class PedidoController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $request = $this->parseRequestDates($request);
-
         $pedidos = Pedido::where(array_filter($request->all()))->get();
 
         return response()->json(compact('pedidos'));
@@ -35,8 +32,6 @@ class PedidoController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request = $this->parseRequestDates($request);
-
         $pedido = new Pedido($request->all());
         $pedido->saveOrFail();
 
@@ -70,8 +65,6 @@ class PedidoController extends Controller
      */
     public function update(Request $request, string $tipo, string $numero): JsonResponse
     {
-        $request = $this->parseRequestDates($request);
-
         $pedido = Pedido::where([
             'tipo' => $tipo,
             'numero' => $numero,
@@ -98,32 +91,5 @@ class PedidoController extends Controller
         $result = $pedido->delete();
 
         return response()->json(compact('result'));
-    }
-
-    /**
-     * Converte o formato das datas do Request para o padrão do banco de dados.
-     *
-     * @param Request $request
-     * @return Request
-     */
-    public function parseRequestDates(Request $request)
-    {
-        if ($request->dataChegada) {
-            $dataChegada = Carbon::createFromFormat('d/m/Y', $request->dataChegada);
-            $dataChegada->setHour(0)->setMinutes(0)->setSeconds(0)->setMicroseconds(0);
-            $request->merge(['dataChegada' => $dataChegada]);
-        }
-        if ($request->dataEnvioFinanceiro) {
-            $dataEnvioFinanceiro = Carbon::createFromFormat('d/m/Y', $request->dataEnvioFinanceiro);
-            $dataEnvioFinanceiro->setHour(0)->setMinutes(0)->setSeconds(0)->setMicroseconds(0);
-            $request->merge(['dataEnvioFinanceiro' => $dataEnvioFinanceiro]);
-        }
-        if ($request->dataRetornoFinanceiro) {
-            $dataRetornoFinanceiro = Carbon::createFromFormat('d/m/Y', $request->dataRetornoFinanceiro);
-            $dataRetornoFinanceiro->setHour(0)->setMinutes(0)->setSeconds(0)->setMicroseconds(0);
-            $request->merge(['dataRetornoFinanceiro' => $dataRetornoFinanceiro]);
-        }
-
-        return $request;
     }
 }
