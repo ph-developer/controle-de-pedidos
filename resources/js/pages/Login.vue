@@ -1,11 +1,29 @@
 <template>
-    <form @submit.prevent="doLogin">
-        <input type="email" required v-model="email" placeholder="E-mail" autofocus>
-        <br>
-        <input type="password" required v-model="senha" placeholder="Senha">
-        <br>
-        <button type="submit">Entrar</button>
-    </form>
+    <div class="container vh-100">
+        <div class="row h-100 align-items-center justify-content-center">
+            <div class="col mw-330">
+                <form @submit.prevent="doLogin">
+                    <p class="w-100 fs-1 text-primary text-center">
+                        <i class="fas fa-user"></i>
+                    </p>
+
+                    <p>
+                        <label class="form-label" for="emailInput">E-mail</label>
+                        <input class="form-control" id="emailInput" type="email" required v-model="email" autofocus>
+                    </p>
+
+                    <p>
+                        <label class="form-label" for="senhaInput">Senha</label>
+                        <input class="form-control" id="senhaInput" type="password" required v-model="senha">
+                    </p>
+
+                    <p class="d-grid gap-2">
+                        <button class="btn btn-primary" type="submit">Entrar</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -34,3 +52,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+.mw-330 {
+    max-width: 330px;
+}
+</style>
