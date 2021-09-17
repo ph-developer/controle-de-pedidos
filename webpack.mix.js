@@ -2,12 +2,13 @@ const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
- | Mix Asset Management
+ | Gerenciamento de Assets pelo Mix
  |--------------------------------------------------------------------------
  |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel application. By default, we are compiling the Sass
- | file for the application as well as bundling up all the JS files.
+ | O Mix fornece uma API limpa e fluente para definir algumas etapas de
+ | construção do Webpack para seu aplicativo Laravel. Por padrão, estamos
+ | compilando o arquivo Sass para o aplicativo, bem como agrupando todos
+ | os arquivos JS.
  |
  */
 
