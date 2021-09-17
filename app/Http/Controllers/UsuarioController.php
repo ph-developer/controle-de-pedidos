@@ -32,6 +32,7 @@ class UsuarioController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $request = $this->encryptSenha($request);
         $usuario = new Usuario($request->all());
         $usuario->saveOrFail();
 
@@ -60,6 +61,7 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
+        $request = $this->encryptSenha($request);
         $usuario = Usuario::findOrFail($id);
         $usuario->updateOrFail($request->all());
 
@@ -79,5 +81,21 @@ class UsuarioController extends Controller
         $result = $usuario->delete();
 
         return response()->json(compact('result'));
+    }
+
+    /**
+     * Encripta o valor 'senha' quando o request contiver o referido valor.
+     *
+     * @param Request $request
+     * @return Request
+     */
+    public function encryptSenha(Request $request): Request
+    {
+        if ($request->has('senha')) {
+            $request->merge([
+                'senha' => bcrypt($request->get('senha')),
+            ]);
+        }
+        return $request;
     }
 }
