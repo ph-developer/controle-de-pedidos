@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="doLogin">
-        <input type="email" required v-model="email" placeholder="E-mail">
+        <input type="email" required v-model="email" placeholder="E-mail" autofocus>
         <br>
         <input type="password" required v-model="senha" placeholder="Senha">
         <br>

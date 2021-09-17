@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="updateSenha">
-        <input type="password" required v-model="newSenha" placeholder="Nova Senha">
+        <input ref="newSenhaInput" type="password" required v-model="newSenha" placeholder="Nova Senha">
         <br>
         <input type="password" required v-model="repeatNewSenha" placeholder="Repita a Nova Senha">
         <br>
@@ -37,11 +37,16 @@ export default {
                 //TODO: mudar de alert para uma popup.
                 alert("Senha alterada com sucesso. Caso a esqueça, contate o administrador para redefini-la.");
                 await this.$router.replace({name: "pedidos"});
+                this.$refs.newSenhaInput.focus();
             } catch (e) {
                 //TODO: mudar de alert para uma popup.
                 alert("Ocorreu um erro ao alterar a senha.");
             }
         },
+
+        mounted() {
+            this.$refs.newSenhaInput.focus();
+        }
     },
 };
 </script>

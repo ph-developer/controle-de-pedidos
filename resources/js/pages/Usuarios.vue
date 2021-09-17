@@ -1,7 +1,7 @@
 <template>
     <div>
         <form @submit.prevent="createUsuario">
-            <input type="text" required v-model="nome" placeholder="Nome">
+            <input ref="nomeInput" type="text" required v-model="nome" placeholder="Nome">
             <input type="email" required v-model="email" placeholder="E-mail">
             <button type="submit">Criar Usuário</button>
         </form>
@@ -58,9 +58,12 @@ export default {
                     senha,
                 });
 
+                this.nome = this.email = "";
+
                 //TODO: mudar de alert para uma popup.
                 alert(`Usuário de e-mail ${this.email} criado com sucesso. A senha do novo usuário é "${senha}".`);
 
+                this.$refs.nomeInput.focus();
                 await this.loadUsuarios();
             } catch (e) {
                 //TODO: mudar de alert para uma popup.
@@ -91,8 +94,6 @@ export default {
 
                 //TODO: mudar de alert para uma popup.
                 alert("Usuário excluído com sucesso.");
-
-                this.nome = this.email = "";
 
                 await this.loadUsuarios();
             } catch (e) {
@@ -140,6 +141,7 @@ export default {
     },
 
     mounted() {
+        this.$refs.nomeInput.focus();
         this.loadUsuarios();
     },
 };
