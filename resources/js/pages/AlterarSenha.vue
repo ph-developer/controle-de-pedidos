@@ -1,13 +1,47 @@
 <template>
-
+    <form @submit.prevent="updateSenha">
+        <input type="password" required v-model="newSenha" placeholder="Nova Senha">
+        <br>
+        <input type="password" required v-model="repeatNewSenha" placeholder="Repita a Nova Senha">
+        <br>
+        <button type="submit">Alterar Senha</button>
+    </form>
 </template>
 
 <script>
+import api from "../services/api";
+
 export default {
     name: "AlterarSenha",
+
+    data() {
+        return {
+            newSenha: "",
+            repeatNewSenha: "",
+        };
+    },
+
+    methods: {
+        async updateSenha() {
+            if (this.newSenha !== this.repeatNewSenha) {
+                //TODO: mudar de alert para uma popup.
+                alert("Os campos 'Nova Senha' e 'Repetir Nova Senha' não conferem.");
+            }
+
+            try {
+                const usuario = this.$store.getters["auth/usuario"];
+                await api.usuarios.updateUsuario({
+                    ...usuario,
+                    senha: this.newSenha,
+                });
+                //TODO: mudar de alert para uma popup.
+                alert("Senha alterada com sucesso. Caso a esqueça, contate o administrador para redefini-la.");
+                await this.$router.replace({name: "pedidos"});
+            } catch (e) {
+                //TODO: mudar de alert para uma popup.
+                alert("Ocorreu um erro ao alterar a senha.");
+            }
+        },
+    },
 };
 </script>
-
-<style scoped>
-
-</style>
