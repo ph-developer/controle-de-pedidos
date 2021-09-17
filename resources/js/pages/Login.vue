@@ -1,10 +1,10 @@
 <template>
     <form @submit.prevent="doLogin">
-        <input id="emailInput" type="email" required v-model="email" placeholder="E-mail">
+        <input type="email" required v-model="email" placeholder="E-mail">
         <br>
-        <input id="senhaInput" type="password" required v-model="senha" placeholder="Senha">
+        <input type="password" required v-model="senha" placeholder="Senha">
         <br>
-        <button id="loginButton" type="submit">Entrar</button>
+        <button type="submit">Entrar</button>
     </form>
 </template>
 
