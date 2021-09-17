@@ -70,7 +70,7 @@ router.beforeEach(async ({meta}, from, next) => {
             //TODO: mudar de alert para uma popup.
             alert("Você não está autenticado.");
             return next({name: "login"});
-        } else if (meta.requireAdmin && store.getters["auth/usuario"]?.nome !== "Admin") {
+        } else if (meta.requireAdmin && store.getters["auth/usuario"]?.email !== "admin@admin.dev") {
             //TODO: mudar de alert para uma popup.
             alert("Você não tem permissão.");
             return next({name: "pedidos"});
