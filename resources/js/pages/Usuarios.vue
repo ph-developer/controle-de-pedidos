@@ -1,31 +1,84 @@
 <template>
     <div>
         <NavBar/>
-        <form @submit.prevent="createUsuario">
-            <input ref="nomeInput" type="text" required v-model="nome" placeholder="Nome">
-            <input type="email" required v-model="email" placeholder="E-mail">
-            <button type="submit">Criar Usuário</button>
-        </form>
-        <button @click="loadUsuarios" :disabled="isLoadingUsuarios">Recarregar</button>
-        <table>
-            <thead>
-            <tr>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Ações</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="usuario in usuarios" :key="usuario.id">
-                <td>{{ usuario.nome }}</td>
-                <td>{{ usuario.email }}</td>
-                <td>
-                    <button @click="deleteUsuario(usuario)">Excluir</button>
-                    <button @click="redefineSenha(usuario)">Redefinir Senha</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <br>
+                    <h3>Usuários</h3>
+                    <br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col mw-600">
+                    <form @submit.prevent="createUsuario">
+                        <div class="row align-items-end">
+                            <div class="col">
+                                <label class="form-label">Nome</label>
+                                <input class="form-control form-control-sm" ref="nomeInput" type="text" required
+                                       v-model="nome" :disabled="isBusy">
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">E-mail</label>
+                                <input class="form-control form-control-sm" type="email" required v-model="email"
+                                       :disabled="isBusy">
+                            </div>
+
+                            <div class="col">
+                                <button class="btn btn-sm btn-primary" type="submit" :disabled="isBusy">
+                                    Criar Usuário
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col">
+                    <table class="table table-sm table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th class="tc-w-40">Nome</th>
+                            <th class="tc-w-40">E-mail</th>
+                            <th class="tc-w-20 text-center">Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="usuario in usuarios" :key="usuario.id">
+                            <td>{{ usuario.nome }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-danger" @click="deleteUsuario(usuario)"
+                                        :disabled="isBusy">
+                                    Excluir
+                                </button>
+                                <button class="btn btn-sm btn-primary" @click="redefineSenha(usuario)"
+                                        :disabled="isBusy">
+                                    Redefinir Senha
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-secondary" @click="loadUsuarios" :disabled="isBusy">
+                                    Atualizar
+                                </button>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -40,7 +93,7 @@ export default {
 
     data() {
         return {
-            isLoadingUsuarios: false,
+            isBusy: false,
             usuarios: [],
             nome: "",
             email: "",
@@ -49,11 +102,14 @@ export default {
 
     methods: {
         async createUsuario() {
+            if (this.isBusy) return;
+
             if (!this.nome || !this.email) {
                 //TODO: mudar de alert para uma popup.
                 return alert("Os campos 'Nome' e 'E-mail' devem ser preenchidos.");
             }
 
+            this.isBusy = true;
             try {
                 const senha = this.generateRandomString();
                 await api.usuarios.createUsuario({
@@ -61,8 +117,8 @@ export default {
                     email: this.email,
                     senha,
                 });
-
                 this.nome = this.email = "";
+                this.isBusy = false;
 
                 //TODO: mudar de alert para uma popup.
                 alert(`Usuário de e-mail ${this.email} criado com sucesso. A senha do novo usuário é "${senha}".`);
@@ -72,27 +128,31 @@ export default {
             } catch (e) {
                 //TODO: mudar de alert para uma popup.
                 alert("Ocorreu um erro ao criar o usuário.");
+                this.isBusy = false;
             }
         },
 
         async loadUsuarios() {
-            if (this.isLoadingUsuarios) return;
+            if (this.isBusy) return;
 
+            this.isBusy = true;
             try {
-                this.isLoadingUsuarios = true;
                 const {usuarios} = await api.usuarios.getUsuarios();
                 this.usuarios = usuarios;
-                this.isLoadingUsuarios = false;
             } catch (e) {
                 //TODO: mudar de alert para uma popup.
                 alert("Ocorreu um erro ao carregar os usuários.");
             }
+            this.isBusy = false;
         },
 
         async deleteUsuario(usuario) {
+            if (this.isBusy) return;
+
             //TODO: mudar de confirm para uma popup.
             if (!confirm(`Deseja realmente excluir o usuário de e-mail ${usuario.email}?`)) return;
 
+            this.isBusy = true;
             try {
                 await api.usuarios.deleteUsuario(usuario.id);
 
@@ -104,12 +164,16 @@ export default {
                 //TODO: mudar de alert para uma popup.
                 alert("Ocorreu um erro ao excluir o usuário.");
             }
+            this.isBusy = false;
         },
 
         async redefineSenha(usuario) {
+            if (this.isBusy) return;
+
             //TODO: mudar de confirm para uma popup.
             if (!confirm(`Deseja realmente redefinir a senha do usuário de e-mail ${usuario.email}?`)) return;
 
+            this.isBusy = true;
             try {
                 const senha = this.generateRandomString();
                 await api.usuarios.updateUsuario({
@@ -125,6 +189,7 @@ export default {
                 //TODO: mudar de alert para uma popup.
                 alert("Ocorreu um erro ao redefinir a senha do usuário.");
             }
+            this.isBusy = false;
         },
 
         /**
@@ -150,3 +215,17 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+.mw-600 {
+    max-width: 600px;
+}
+
+.tc-w-20 {
+    width: 20%;
+}
+
+.tc-w-40 {
+    width: 40%;
+}
+</style>

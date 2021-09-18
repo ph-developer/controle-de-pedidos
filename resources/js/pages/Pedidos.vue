@@ -1,41 +1,120 @@
 <template>
     <div>
         <NavBar/>
-        <form @submit.prevent>
-            <input ref="numeroInput" type="text" v-model="numero" placeholder="Número" @input="debounceSearchPedido">
-            <br>
-            <select v-model="tipo" @change="debounceSearchPedido">
-                <option value="SE">SE</option>
-                <option value="RM">RM</option>
-            </select>
-            <br>
-            <input type="date" v-model="dataChegada">
-            <br>
-            <input type="text" v-model="secretariaSolicitante" placeholder="Secretaria Solicitante">
-            <br>
-            <input type="text" v-model="projeto" placeholder="Projeto">
-            <br>
-            <textarea v-model="descricao"/>
-            <br>
-            <input type="date" v-model="dataEnvioFinanceiro">
-            <br>
-            <input type="date" v-model="dataRetornoFinanceiro">
-            <br>
-            <input type="text" v-model="situacaoAutorizacao" placeholder="Situação da Autorização">
-            <br>
-            <textarea v-model="observacoes"/>
-            <br>
-            <button v-if="!existentPedido" id="createPedidoButton" @click="createPedido" :disabled="!numero || !tipo">
-                Gravar
-            </button>
-            <button v-else id="updatePedidoButton" @click="updatePedido" :disabled="!numero || !tipo">Alterar</button>
-            <br>
-            <button id="deletePedidoButton" @click="deletePedido" :disabled="!existentPedido || !numero || !tipo">
-                Excluir
-            </button>
-            <br>
-            <button id="clearFormButton" @click="clearForm">Limpar</button>
-        </form>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <br>
+                    <h3>Pedidos</h3>
+                    <br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <form @submit.prevent>
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">Número do Pedido</label>
+                                <input class="form-control form-control-sm" ref="numeroInput" type="text"
+                                       v-model="numero" @input="debounceSearchPedido" :disabled="isBusy">
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">Tipo do Pedido</label>
+                                <select class="form-select form-select-sm" v-model="tipo" @change="debounceSearchPedido"
+                                        :disabled="isBusy">
+                                    <option value="SE">SE</option>
+                                    <option value="RM">RM</option>
+                                </select>
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">Data de Chegada</label>
+                                <input class="form-control form-control-sm" type="date" v-model="dataChegada"
+                                       :disabled="isBusy">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">Secretaria Solicitante</label>
+                                <input class="form-control form-control-sm" type="text" v-model="secretariaSolicitante"
+                                       :disabled="isBusy">
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">Secretaria Solicitante</label>
+                                <input class="form-control form-control-sm" type="text" v-model="projeto"
+                                       :disabled="isBusy">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">Descrição</label>
+                                <textarea class="form-control form-control-sm" v-model="descricao" rows="3"
+                                          :disabled="isBusy"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">Data de Envio ao Financeiro</label>
+                                <input class="form-control form-control-sm" type="date" v-model="dataEnvioFinanceiro"
+                                       :disabled="isBusy">
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">Data de Retorno do Financeiro</label>
+                                <input class="form-control form-control-sm" type="date" v-model="dataRetornoFinanceiro"
+                                       :disabled="isBusy">
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">Situação da Autorização</label>
+                                <input class="form-control form-control-sm" type="text" v-model="situacaoAutorizacao"
+                                       :disabled="isBusy">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label">Observações</label>
+                                <textarea class="form-control form-control-sm" v-model="observacoes" rows="3"
+                                          :disabled="isBusy"/>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div class="row">
+                            <div class="col">
+                                <button v-if="!existentPedido" class="btn btn-sm btn-primary" type="button"
+                                        @click="createPedido" :disabled="!numero || !tipo || isBusy">
+                                    Gravar
+                                </button>
+
+                                <button v-else class="btn btn-sm btn-primary" type="button" @click="updatePedido"
+                                        :disabled="!numero || !tipo || isBusy">
+                                    Alterar
+                                </button>
+
+                                <button class="btn btn-sm btn-danger" type="button" @click="deletePedido"
+                                        :disabled="!existentPedido || !numero || !tipo || isBusy">
+                                    Excluir
+                                </button>
+
+                                <button class="btn btn-sm btn-secondary" type="button" @click="clearForm"
+                                        :disabled="isBusy">
+                                    Limpar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -51,6 +130,7 @@ export default {
 
     data() {
         return {
+            isBusy: false,
             existentPedido: false,
             numero: "",
             tipo: "SE",
@@ -98,72 +178,81 @@ export default {
         }, 800),
 
         async createPedido() {
-            if (!this.existentPedido && this.numero && this.tipo) {
-                try {
-                    const {pedido} = await api.pedidos.createPedido({
-                        numero: this.numero,
-                        tipo: this.tipo,
-                        dataChegada: this.dataChegada,
-                        secretariaSolicitante: this.secretariaSolicitante,
-                        projeto: this.projeto,
-                        descricao: this.descricao,
-                        dataEnvioFinanceiro: this.dataEnvioFinanceiro,
-                        dataRetornoFinanceiro: this.dataRetornoFinanceiro,
-                        situacaoAutorizacao: this.situacaoAutorizacao,
-                        observacoes: this.observacoes,
-                    });
-                    this.existentPedido = !!pedido;
-                    //TODO: mudar de alert para uma popup.
-                    alert("Pedido gravado.");
-                } catch (e) {
-                    //TODO: mudar de alert para uma popup.
-                    alert("Ocorreu um erro ao gravar o pedido.");
-                }
+            if (this.existentPedido || !this.numero || !this.tipo || this.isBusy) return;
+
+            this.isBusy = true;
+            try {
+                const {pedido} = await api.pedidos.createPedido({
+                    numero: this.numero,
+                    tipo: this.tipo,
+                    dataChegada: this.dataChegada,
+                    secretariaSolicitante: this.secretariaSolicitante,
+                    projeto: this.projeto,
+                    descricao: this.descricao,
+                    dataEnvioFinanceiro: this.dataEnvioFinanceiro,
+                    dataRetornoFinanceiro: this.dataRetornoFinanceiro,
+                    situacaoAutorizacao: this.situacaoAutorizacao,
+                    observacoes: this.observacoes,
+                });
+                this.existentPedido = !!pedido;
+
+                //TODO: mudar de alert para uma popup.
+                alert("Pedido gravado.");
+            } catch (e) {
+                //TODO: mudar de alert para uma popup.
+                alert("Ocorreu um erro ao gravar o pedido.");
             }
+            this.isBusy = false;
         },
 
         async updatePedido() {
-            if (this.existentPedido && this.numero && this.tipo) {
-                try {
-                    const {pedido} = await api.pedidos.updatePedido({
-                        numero: this.numero,
-                        tipo: this.tipo,
-                        dataChegada: this.dataChegada,
-                        secretariaSolicitante: this.secretariaSolicitante,
-                        projeto: this.projeto,
-                        descricao: this.descricao,
-                        dataEnvioFinanceiro: this.dataEnvioFinanceiro,
-                        dataRetornoFinanceiro: this.dataRetornoFinanceiro,
-                        situacaoAutorizacao: this.situacaoAutorizacao,
-                        observacoes: this.observacoes,
-                    });
-                    this.existentPedido = !!pedido;
-                    //TODO: mudar de alert para uma popup.
-                    alert("Pedido alterado.");
-                } catch (e) {
-                    //TODO: mudar de alert para uma popup.
-                    alert("Ocorreu um erro ao alterar o pedido.");
-                }
+            if (!this.existentPedido || !this.numero || !this.tipo || this.isBusy) return;
+
+            this.isBusy = true;
+            try {
+                const {pedido} = await api.pedidos.updatePedido({
+                    numero: this.numero,
+                    tipo: this.tipo,
+                    dataChegada: this.dataChegada,
+                    secretariaSolicitante: this.secretariaSolicitante,
+                    projeto: this.projeto,
+                    descricao: this.descricao,
+                    dataEnvioFinanceiro: this.dataEnvioFinanceiro,
+                    dataRetornoFinanceiro: this.dataRetornoFinanceiro,
+                    situacaoAutorizacao: this.situacaoAutorizacao,
+                    observacoes: this.observacoes,
+                });
+                this.existentPedido = !!pedido;
+
+                //TODO: mudar de alert para uma popup.
+                alert("Pedido alterado.");
+            } catch (e) {
+                //TODO: mudar de alert para uma popup.
+                alert("Ocorreu um erro ao alterar o pedido.");
             }
+            this.isBusy = false;
         },
 
         async deletePedido() {
-            if (this.existentPedido && this.numero && this.tipo) {
-                if (!confirm(`Deseja realmente excluir a ${this.tipo} nº ${this.numero}?`)) return;
+            if (!this.existentPedido || !this.numero || !this.tipo || this.isBusy) return;
+            if (!confirm(`Deseja realmente excluir a ${this.tipo} nº ${this.numero}?`)) return;
 
-                try {
-                    await api.pedidos.deletePedido(this.tipo, this.numero);
-                    this.clearForm();
-                    //TODO: mudar de alert para uma popup.
-                    alert("Pedido excluído.");
-                } catch (e) {
-                    //TODO: mudar de alert para uma popup.
-                    alert("Ocorreu um erro ao excluir o pedido.");
-                }
+            this.isBusy = true;
+            try {
+                await api.pedidos.deletePedido(this.tipo, this.numero);
+                this.clearForm();
+
+                //TODO: mudar de alert para uma popup.
+                alert("Pedido excluído.");
+            } catch (e) {
+                //TODO: mudar de alert para uma popup.
+                alert("Ocorreu um erro ao excluir o pedido.");
             }
+            this.isBusy = false;
         },
 
         clearForm() {
+            this.isBusy = true;
             this.numero = "";
             this.tipo = "SE";
             this.dataChegada = "";
@@ -175,6 +264,7 @@ export default {
             this.situacaoAutorizacao = "";
             this.observacoes = "";
             this.existentPedido = false;
+            this.isBusy = false;
             this.$refs.numeroInput.focus();
         },
     },
@@ -184,3 +274,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+textarea {
+    resize: none;
+}
+</style>

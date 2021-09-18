@@ -2,28 +2,36 @@
     <div>
         <NavBar/>
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col mw-330">
+            <div class="row">
+                <div class="col">
+                    <br>
+                    <h3>Alterar Senha</h3>
+                    <br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col mw-600">
                     <form @submit.prevent="updateSenha">
-                        <br>
-                        <h3>Alterar Senha</h3>
-                        <br>
+                        <div class="row align-items-end">
+                            <div class="col">
+                                <label class="form-label">Nova Senha</label>
+                                <input class="form-control form-control-sm" ref="newSenhaInput" type="password" required
+                                       v-model="newSenha" :disabled="isBusy">
+                            </div>
 
-                        <p>
-                            <label class="form-label" for="newSenhaInput">Nova Senha</label>
-                            <input class="form-control" id="newSenhaInput" ref="newSenhaInput" type="password" required
-                                   v-model="newSenha">
-                        </p>
+                            <div class="col">
+                                <label class="form-label">Repita a Nova Senha</label>
+                                <input class="form-control form-control-sm" type="password" required
+                                       v-model="repeatNewSenha" :disabled="isBusy">
+                            </div>
 
-                        <p>
-                            <label class="form-label" for="repeatNewSenhaInput">Repita a Nova Senha</label>
-                            <input class="form-control" id="repeatNewSenhaInput" type="password" required
-                                   v-model="repeatNewSenha">
-                        </p>
-
-                        <p class="d-grid gap-2">
-                            <button class="btn btn-primary" type="submit">Alterar Senha</button>
-                        </p>
+                            <div class="col">
+                                <button class="btn btn-sm btn-primary" type="submit" :disabled="isBusy">
+                                    Alterar Senha
+                                </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -42,6 +50,7 @@ export default {
 
     data() {
         return {
+            isBusy: false,
             newSenha: "",
             repeatNewSenha: "",
         };
@@ -49,25 +58,30 @@ export default {
 
     methods: {
         async updateSenha() {
+            if (this.isBusy) return;
+
             if (this.newSenha !== this.repeatNewSenha) {
                 //TODO: mudar de alert para uma popup.
                 return alert("Os campos 'Nova Senha' e 'Repetir Nova Senha' não conferem.");
             }
 
+            this.isBusy = true;
             try {
                 const usuario = this.$store.getters["auth/usuario"];
                 await api.usuarios.updateUsuario({
                     ...usuario,
                     senha: this.newSenha,
                 });
+
                 //TODO: mudar de alert para uma popup.
                 alert("Senha alterada com sucesso. Caso a esqueça, contate o administrador para redefini-la.");
+
                 await this.$router.replace({name: "pedidos"});
-                this.$refs.newSenhaInput.focus();
             } catch (e) {
                 //TODO: mudar de alert para uma popup.
                 alert("Ocorreu um erro ao alterar a senha.");
             }
+            this.isBusy = false;
         },
 
         mounted() {
@@ -78,7 +92,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.mw-330 {
-    max-width: 330px;
+.mw-600 {
+    max-width: 600px;
 }
 </style>

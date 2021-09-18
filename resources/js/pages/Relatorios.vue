@@ -1,37 +1,80 @@
 <template>
     <div>
         <NavBar/>
-        <div>
-            <button @click="exportToPDF" :disabled="pedidos.length === 0 || isSearchingPedidos">Exportar para PDF
-            </button>
-            <form @submit.prevent="searchPedidos">
-                <select v-model="searchField" @change="clearPedidos">
-                    <option value="dataChegada">Data de Chegada</option>
-                    <option value="dataEnvioFinanceiro">Data de Envio ao Financeiro</option>
-                </select>
-                <input ref="searchValueInput" type="date" v-model="searchValue" @change="clearPedidos">
-                <button type="submit" :disabled="!searchValue || !searchField || isSearchingPedidos">Buscar</button>
-                <button type="button" @click="clearForm" :disabled="isSearchingPedidos">Limpar</button>
-            </form>
-            <table v-if="pedidos.length > 0">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Secretaria</th>
-                    <th>Projeto</th>
-                    <th>Descrição</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="pedido in pedidos" :key="pedido.id">
-                    <td>{{ `${pedido.tipo} ${pedido.numero}` }}</td>
-                    <td>{{ pedido.secretariaSolicitante }}</td>
-                    <td>{{ pedido.projeto }}</td>
-                    <td>{{ pedido.descricao }}</td>
-                </tr>
-                </tbody>
-            </table>
-            <p v-else>Nenhum pedido...</p>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <br>
+                    <h3>Relatórios</h3>
+                    <br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <form @submit.prevent="searchPedidos">
+                        <div class="row align-items-end">
+                            <div class="col">
+                                <label class="form-label">Buscar Pedidos por...</label>
+                                <select class="form-select form-select-sm" v-model="searchField" @change="clearPedidos"
+                                        :disabled="isBusy">
+                                    <option value="dataChegada">Data de Chegada</option>
+                                    <option value="dataEnvioFinanceiro">Data de Envio ao Financeiro</option>
+                                </select>
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">&nbsp;</label>
+                                <input class="form-control form-control-sm" ref="searchValueInput" type="date"
+                                       v-model="searchValue" @change="clearPedidos" :disabled="isBusy">
+                            </div>
+
+                            <div class="col">
+                                <button class="btn btn-sm btn-primary" type="submit"
+                                        :disabled="!searchValue || !searchField || isBusy">
+                                    Buscar
+                                </button>
+
+                                <button class="btn btn-sm btn-secondary" type="button" @click="clearForm"
+                                        :disabled="isBusy">
+                                    Limpar
+                                </button>
+
+                                <button class="btn btn-sm btn-secondary" type="button" @click="exportToPDF"
+                                        :disabled="pedidos.length === 0 || isBusy">
+                                    Exportar para PDF
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col">
+                    <table class="table table-sm table-striped table-hover" v-if="pedidos.length > 0">
+                        <thead>
+                        <tr>
+                            <th class="tc-w-15">#</th>
+                            <th class="tc-w-25">Secretaria</th>
+                            <th class="tc-w-20">Projeto</th>
+                            <th class="tc-w-40">Descrição</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="pedido in pedidos" :key="pedido.id">
+                            <td>{{ `${pedido.tipo} ${pedido.numero}` }}</td>
+                            <td>{{ pedido.secretariaSolicitante }}</td>
+                            <td>{{ pedido.projeto }}</td>
+                            <td>{{ pedido.descricao }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p v-else>Nenhum pedido...</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -51,8 +94,7 @@ export default {
             pedidos: [],
             searchField: "dataEnvioFinanceiro",
             searchValue: "",
-            isSearchingPedidos: false,
-            isClearingForm: false,
+            isBusy: false,
         };
     },
 
@@ -62,15 +104,14 @@ export default {
         },
 
         async searchPedidos() {
-            if (this.isSearchingPedidos || this.isClearingForm) return;
+            if (this.isBusy) return;
 
+            this.isBusy = true;
             try {
-                this.isSearchingPedidos = true;
                 const {pedidos} = await api.pedidos.getPedidos({
                     [this.searchField]: this.searchValue,
                 });
                 this.pedidos = pedidos;
-                this.isSearchingPedidos = false;
 
                 //TODO: mudar de alert para uma popup.
                 alert("Pedidos carregados com sucesso.");
@@ -78,6 +119,7 @@ export default {
                 //TODO: mudar de alert para uma popup.
                 alert("Ocorreu um erro ao buscar os pedidos.");
             }
+            this.isBusy = false;
         },
 
         clearPedidos() {
@@ -85,11 +127,13 @@ export default {
         },
 
         clearForm() {
+            if (this.isBusy) return;
+
+            this.isBusy = true;
             this.pedidos = [];
-            this.isClearingForm = true;
             this.searchField = "dataEnvioFinanceiro";
             this.searchValue = "";
-            this.isClearingForm = false;
+            this.isBusy = false;
         },
 
         mounted() {
@@ -98,3 +142,21 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+.tc-w-15 {
+    width: 15%;
+}
+
+.tc-w-20 {
+    width: 20%;
+}
+
+.tc-w-25 {
+    width: 25%;
+}
+
+.tc-w-40 {
+    width: 40%;
+}
+</style>

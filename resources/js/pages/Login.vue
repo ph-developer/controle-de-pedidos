@@ -8,17 +8,21 @@
                     </p>
 
                     <p>
-                        <label class="form-label" for="emailInput">E-mail</label>
-                        <input class="form-control" id="emailInput" type="email" required v-model="email" autofocus>
+                        <label class="form-label">E-mail</label>
+                        <input class="form-control form-control-sm" type="email" required v-model="email" autofocus
+                               :disabled="isBusy">
                     </p>
 
                     <p>
-                        <label class="form-label" for="senhaInput">Senha</label>
-                        <input class="form-control" id="senhaInput" type="password" required v-model="senha">
+                        <label class="form-label">Senha</label>
+                        <input class="form-control form-control-sm" type="password" required v-model="senha"
+                               :disabled="isBusy">
                     </p>
 
                     <p class="d-grid gap-2">
-                        <button class="btn btn-primary" type="submit">Entrar</button>
+                        <button class="btn btn-sm btn-primary" type="submit" :disabled="isBusy">
+                            Entrar
+                        </button>
                     </p>
                 </form>
             </div>
@@ -34,6 +38,7 @@ export default {
 
     data() {
         return {
+            isBusy: false,
             email: "",
             senha: "",
         };
@@ -41,6 +46,9 @@ export default {
 
     methods: {
         async doLogin() {
+            if (this.isBusy) return;
+
+            this.isBusy = true;
             try {
                 await api.auth.doLogin(this.email, this.senha);
                 await this.$router.replace({name: "pedidos"});
@@ -48,6 +56,7 @@ export default {
                 //TODO: mudar de alert para uma popup.
                 alert("E-mail ou Senha incorreto.");
             }
+            this.isBusy = false;
         },
     },
 };

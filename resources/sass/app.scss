@@ -6,3 +6,10 @@
 
 // Bootstrap
 @import '~bootstrap/dist/css/bootstrap.min.css';
+
+// Customizado
+.form-label {
+    padding-top: 10px;
+    padding-bottom: 0;
+    font-size: .875rem;
+}
