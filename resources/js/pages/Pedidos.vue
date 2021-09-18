@@ -1,45 +1,53 @@
 <template>
-    <form @submit.prevent>
-        <input ref="numeroInput" type="text" v-model="numero" placeholder="Número" @input="debounceSearchPedido">
-        <br>
-        <select v-model="tipo" @change="debounceSearchPedido">
-            <option value="SE">SE</option>
-            <option value="RM">RM</option>
-        </select>
-        <br>
-        <input type="date" v-model="dataChegada">
-        <br>
-        <input type="text" v-model="secretariaSolicitante" placeholder="Secretaria Solicitante">
-        <br>
-        <input type="text" v-model="projeto" placeholder="Projeto">
-        <br>
-        <textarea v-model="descricao"/>
-        <br>
-        <input type="date" v-model="dataEnvioFinanceiro">
-        <br>
-        <input type="date" v-model="dataRetornoFinanceiro">
-        <br>
-        <input type="text" v-model="situacaoAutorizacao" placeholder="Situação da Autorização">
-        <br>
-        <textarea v-model="observacoes"/>
-        <br>
-        <button v-if="!existentPedido" id="createPedidoButton" @click="createPedido" :disabled="!numero || !tipo">Gravar
-        </button>
-        <button v-else id="updatePedidoButton" @click="updatePedido" :disabled="!numero || !tipo">Alterar</button>
-        <br>
-        <button id="deletePedidoButton" @click="deletePedido" :disabled="!existentPedido || !numero || !tipo">Excluir
-        </button>
-        <br>
-        <button id="clearFormButton" @click="clearForm">Limpar</button>
-    </form>
+    <div>
+        <NavBar/>
+        <form @submit.prevent>
+            <input ref="numeroInput" type="text" v-model="numero" placeholder="Número" @input="debounceSearchPedido">
+            <br>
+            <select v-model="tipo" @change="debounceSearchPedido">
+                <option value="SE">SE</option>
+                <option value="RM">RM</option>
+            </select>
+            <br>
+            <input type="date" v-model="dataChegada">
+            <br>
+            <input type="text" v-model="secretariaSolicitante" placeholder="Secretaria Solicitante">
+            <br>
+            <input type="text" v-model="projeto" placeholder="Projeto">
+            <br>
+            <textarea v-model="descricao"/>
+            <br>
+            <input type="date" v-model="dataEnvioFinanceiro">
+            <br>
+            <input type="date" v-model="dataRetornoFinanceiro">
+            <br>
+            <input type="text" v-model="situacaoAutorizacao" placeholder="Situação da Autorização">
+            <br>
+            <textarea v-model="observacoes"/>
+            <br>
+            <button v-if="!existentPedido" id="createPedidoButton" @click="createPedido" :disabled="!numero || !tipo">
+                Gravar
+            </button>
+            <button v-else id="updatePedidoButton" @click="updatePedido" :disabled="!numero || !tipo">Alterar</button>
+            <br>
+            <button id="deletePedidoButton" @click="deletePedido" :disabled="!existentPedido || !numero || !tipo">
+                Excluir
+            </button>
+            <br>
+            <button id="clearFormButton" @click="clearForm">Limpar</button>
+        </form>
+    </div>
 </template>
 
 <script>
 import api from "../services/api";
 import _ from "lodash";
+import NavBar from "../components/NavBar";
 
 export default {
     name: "Pedidos",
+
+    components: {NavBar},
 
     data() {
         return {

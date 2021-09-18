@@ -1,18 +1,24 @@
 <template>
-    <form @submit.prevent="updateSenha">
-        <input ref="newSenhaInput" type="password" required v-model="newSenha" placeholder="Nova Senha">
-        <br>
-        <input type="password" required v-model="repeatNewSenha" placeholder="Repita a Nova Senha">
-        <br>
-        <button type="submit">Alterar Senha</button>
-    </form>
+    <div>
+        <NavBar/>
+        <form @submit.prevent="updateSenha">
+            <input ref="newSenhaInput" type="password" required v-model="newSenha" placeholder="Nova Senha">
+            <br>
+            <input type="password" required v-model="repeatNewSenha" placeholder="Repita a Nova Senha">
+            <br>
+            <button type="submit">Alterar Senha</button>
+        </form>
+    </div>
 </template>
 
 <script>
 import api from "../services/api";
+import NavBar from "../components/NavBar";
 
 export default {
     name: "AlterarSenha",
+
+    components: {NavBar},
 
     data() {
         return {
@@ -46,7 +52,7 @@ export default {
 
         mounted() {
             this.$refs.newSenhaInput.focus();
-        }
+        },
     },
 };
 </script>

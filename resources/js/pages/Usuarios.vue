@@ -1,5 +1,6 @@
 <template>
     <div>
+        <NavBar/>
         <form @submit.prevent="createUsuario">
             <input ref="nomeInput" type="text" required v-model="nome" placeholder="Nome">
             <input type="email" required v-model="email" placeholder="E-mail">
@@ -30,9 +31,12 @@
 
 <script>
 import api from "../services/api";
+import NavBar from "../components/NavBar";
 
 export default {
     name: "Usuarios",
+
+    components: {NavBar},
 
     data() {
         return {

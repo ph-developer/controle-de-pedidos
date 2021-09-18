@@ -1,42 +1,50 @@
 <template>
     <div>
-        <button @click="exportToPDF" :disabled="pedidos.length === 0 || isSearchingPedidos">Exportar para PDF</button>
-        <form @submit.prevent="searchPedidos">
-            <select v-model="searchField" @change="clearPedidos">
-                <option value="dataChegada">Data de Chegada</option>
-                <option value="dataEnvioFinanceiro">Data de Envio ao Financeiro</option>
-            </select>
-            <input ref="searchValueInput" type="date" v-model="searchValue" @change="clearPedidos">
-            <button type="submit" :disabled="!searchValue || !searchField || isSearchingPedidos">Buscar</button>
-            <button type="button" @click="clearForm" :disabled="isSearchingPedidos">Limpar</button>
-        </form>
-        <table v-if="pedidos.length > 0">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Secretaria</th>
-                <th>Projeto</th>
-                <th>Descrição</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="pedido in pedidos" :key="pedido.id">
-                <td>{{ `${pedido.tipo} ${pedido.numero}` }}</td>
-                <td>{{ pedido.secretariaSolicitante }}</td>
-                <td>{{ pedido.projeto }}</td>
-                <td>{{ pedido.descricao }}</td>
-            </tr>
-            </tbody>
-        </table>
-        <p v-else>Nenhum pedido...</p>
+        <NavBar/>
+        <div>
+            <button @click="exportToPDF" :disabled="pedidos.length === 0 || isSearchingPedidos">Exportar para PDF
+            </button>
+            <form @submit.prevent="searchPedidos">
+                <select v-model="searchField" @change="clearPedidos">
+                    <option value="dataChegada">Data de Chegada</option>
+                    <option value="dataEnvioFinanceiro">Data de Envio ao Financeiro</option>
+                </select>
+                <input ref="searchValueInput" type="date" v-model="searchValue" @change="clearPedidos">
+                <button type="submit" :disabled="!searchValue || !searchField || isSearchingPedidos">Buscar</button>
+                <button type="button" @click="clearForm" :disabled="isSearchingPedidos">Limpar</button>
+            </form>
+            <table v-if="pedidos.length > 0">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Secretaria</th>
+                    <th>Projeto</th>
+                    <th>Descrição</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="pedido in pedidos" :key="pedido.id">
+                    <td>{{ `${pedido.tipo} ${pedido.numero}` }}</td>
+                    <td>{{ pedido.secretariaSolicitante }}</td>
+                    <td>{{ pedido.projeto }}</td>
+                    <td>{{ pedido.descricao }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <p v-else>Nenhum pedido...</p>
+        </div>
     </div>
+
 </template>
 
 <script>
 import api from "../services/api";
+import NavBar from "../components/NavBar";
 
 export default {
     name: "Relatorios",
+
+    components: {NavBar},
 
     data() {
         return {
