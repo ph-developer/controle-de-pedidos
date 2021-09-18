@@ -11,6 +11,7 @@ const auth = {
         isLoading: (state) => state.isLoading,
         isAuthenticated: (state) => state.isAuthenticated,
         usuario: (state) => state.usuario,
+        isAdmin: (state) => state.usuario?.email === "admin@admin.dev",
     },
 
     mutations: {
