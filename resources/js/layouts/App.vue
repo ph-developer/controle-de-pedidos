@@ -9,10 +9,16 @@
 <script>
 import {mapGetters} from "vuex";
 
+/**
+ * Layout App.
+ * Layout da Single Page Application (SPA). Utilizado como container das páginas (através do router-view), e como
+ * container das toasts.
+ */
 export default {
     name: "App",
 
     computed: {
+        // Valores "calculados" provenientes do estado da aplicação.
         ...mapGetters({
             isLoading: "auth/isLoading",
         }),

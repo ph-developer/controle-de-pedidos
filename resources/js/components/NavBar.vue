@@ -53,10 +53,16 @@ import api from "../services/api";
 import {mapGetters} from "vuex";
 import store from "../store";
 
+/**
+ * Componente NavBar.
+ * Componente de navegação que pode ser utilizado apenas quando o usuário está autenticado.
+ * O componente possui links para navegação para todas as páginas da aplicação que necessitam de autenticação.
+ */
 export default {
     name: "NavBar",
 
     computed: {
+        // Valores "calculados" provenientes do estado da aplicação.
         ...mapGetters({
             isAdmin: "auth/isAdmin",
             usuario: "auth/usuario",
@@ -64,10 +70,20 @@ export default {
     },
 
     methods: {
+        /**
+         * Efetua o logout do usuário.
+         *
+         * @returns {Promise<void>}
+         */
         async doLogout() {
+            // Faz uma requisição à API para efetuar o logout do usuário.
             await api.auth.doLogout();
+
+            // Remove do estado da aplicação o usuário e altera o status de autenticação.
             store.commit("auth/setIsAuthenticated", false);
             store.commit("auth/setUsuario", null);
+
+            // Navega para a página "login".
             await this.$router.replace({name: "login"});
         },
     },
