@@ -1,13 +1,33 @@
 <template>
     <div>
         <NavBar/>
-        <form @submit.prevent="updateSenha">
-            <input ref="newSenhaInput" type="password" required v-model="newSenha" placeholder="Nova Senha">
-            <br>
-            <input type="password" required v-model="repeatNewSenha" placeholder="Repita a Nova Senha">
-            <br>
-            <button type="submit">Alterar Senha</button>
-        </form>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col mw-330">
+                    <form @submit.prevent="updateSenha">
+                        <br>
+                        <h3>Alterar Senha</h3>
+                        <br>
+
+                        <p>
+                            <label class="form-label" for="newSenhaInput">Nova Senha</label>
+                            <input class="form-control" id="newSenhaInput" ref="newSenhaInput" type="password" required
+                                   v-model="newSenha">
+                        </p>
+
+                        <p>
+                            <label class="form-label" for="repeatNewSenhaInput">Repita a Nova Senha</label>
+                            <input class="form-control" id="repeatNewSenhaInput" type="password" required
+                                   v-model="repeatNewSenha">
+                        </p>
+
+                        <p class="d-grid gap-2">
+                            <button class="btn btn-primary" type="submit">Alterar Senha</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -56,3 +76,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+.mw-330 {
+    max-width: 330px;
+}
+</style>
