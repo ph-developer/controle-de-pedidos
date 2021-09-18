@@ -36,6 +36,10 @@
 
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
+                        <b class="nav-link">{{ usuario["nome"] }}</b>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link c-pointer" @click="doLogout">Sair</a>
                     </li>
                 </ul>
@@ -54,6 +58,7 @@ export default {
     computed: {
         ...mapGetters({
             isAdmin: "auth/isAdmin",
+            usuario: "auth/usuario",
         }),
     },
 
