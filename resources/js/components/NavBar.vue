@@ -51,6 +51,7 @@
 <script>
 import api from "../services/api";
 import {mapGetters} from "vuex";
+import store from "../store";
 
 export default {
     name: "NavBar",
@@ -65,6 +66,8 @@ export default {
     methods: {
         async doLogout() {
             await api.auth.doLogout();
+            store.commit("auth/setIsAuthenticated", false);
+            store.commit("auth/setUsuario", null);
             await this.$router.replace({name: "login"});
         },
     },

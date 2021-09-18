@@ -32,6 +32,7 @@
 
 <script>
 import api from "../services/api";
+import store from "../store";
 
 export default {
     name: "Login",
@@ -51,8 +52,13 @@ export default {
             this.isBusy = true;
             try {
                 await api.auth.doLogin(this.email, this.senha);
+                const usuario = await api.auth.getUsuario();
+                store.commit("auth/setIsAuthenticated", true);
+                store.commit("auth/setUsuario", usuario);
                 await this.$router.replace({name: "pedidos"});
             } catch (e) {
+                store.commit("auth/setIsAuthenticated", false);
+                store.commit("auth/setUsuario", null);
                 //TODO: mudar de alert para uma popup.
                 alert("E-mail ou Senha incorreto.");
             }

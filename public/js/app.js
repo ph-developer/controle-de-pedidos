@@ -5225,7 +5225,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _services_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/api */ "./resources/js/services/api/index.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -5290,9 +5291,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "NavBar",
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
     isAdmin: "auth/isAdmin",
     usuario: "auth/usuario"
   })),
@@ -5309,12 +5311,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 return _services_api__WEBPACK_IMPORTED_MODULE_1__["default"].auth.doLogout();
 
               case 2:
-                _context.next = 4;
+                _store__WEBPACK_IMPORTED_MODULE_2__["default"].commit("auth/setIsAuthenticated", false);
+                _store__WEBPACK_IMPORTED_MODULE_2__["default"].commit("auth/setUsuario", null);
+                _context.next = 6;
                 return _this.$router.replace({
                   name: "login"
                 });
 
-              case 4:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -5565,6 +5569,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _services_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/api */ "./resources/js/services/api/index.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -5604,6 +5609,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Login",
   data: function data() {
@@ -5618,6 +5624,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var usuario;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -5637,29 +5644,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 6:
                 _context.next = 8;
+                return _services_api__WEBPACK_IMPORTED_MODULE_1__["default"].auth.getUsuario();
+
+              case 8:
+                usuario = _context.sent;
+                _store__WEBPACK_IMPORTED_MODULE_2__["default"].commit("auth/setIsAuthenticated", true);
+                _store__WEBPACK_IMPORTED_MODULE_2__["default"].commit("auth/setUsuario", usuario);
+                _context.next = 13;
                 return _this.$router.replace({
                   name: "pedidos"
                 });
 
-              case 8:
-                _context.next = 13;
+              case 13:
+                _context.next = 20;
                 break;
 
-              case 10:
-                _context.prev = 10;
+              case 15:
+                _context.prev = 15;
                 _context.t0 = _context["catch"](3);
-                //TODO: mudar de alert para uma popup.
+                _store__WEBPACK_IMPORTED_MODULE_2__["default"].commit("auth/setIsAuthenticated", false);
+                _store__WEBPACK_IMPORTED_MODULE_2__["default"].commit("auth/setUsuario", null); //TODO: mudar de alert para uma popup.
+
                 alert("E-mail ou Senha incorreto.");
 
-              case 13:
+              case 20:
                 _this.isBusy = false;
 
-              case 14:
+              case 21:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[3, 10]]);
+        }, _callee, null, [[3, 15]]);
       }))();
     }
   }
