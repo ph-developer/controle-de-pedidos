@@ -1,6 +1,10 @@
 <?php
 
 return [
+    /**
+     * Não será utilizado um sistema de hashing personalizado nesta aplicação.
+     * Esta é a configuração padrão do framework.
+     */
 
     /*
     |--------------------------------------------------------------------------

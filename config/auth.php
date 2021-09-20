@@ -1,40 +1,23 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Defaults
-    |--------------------------------------------------------------------------
-    |
-    | This option controls the default authentication "guard" and password
-    | reset options for your application. You may change these defaults
-    | as required, but they're a perfect start for most applications.
-    |
-    */
-
+    /**
+     * Padrões de Autenticação
+     * Esta opção controla o guarda (guard) de autenticação padrão e as opções de redefinição de senha da aplicação.
+     */
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Guards
-    |--------------------------------------------------------------------------
-    |
-    | Next, you may define every authentication guard for your application.
-    | Of course, a great default configuration has been defined for you
-    | here which uses session storage and the Eloquent user provider.
-    |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
-    |
-    | Supported: "session"
-    |
-    */
-
+    /**
+     * Guardas (Guards) de Autenticação
+     * Aqui definimos os guardas (guards) de autenticação da aplicação.
+     * Todos os drivers de autenticação têm um provedor de usuário (user provider).
+     * Isto define como os usuários são resgatados do banco de dados ou outro mecanismo de armazenamento usado pela
+     * aplicação para persistência de dados.
+     * Drivers Suportados: "session".
+     */
     'guards' => [
         'web' => [
             'driver' => 'session',
@@ -42,50 +25,26 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | User Providers
-    |--------------------------------------------------------------------------
-    |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
-    |
-    | If you have multiple user tables or models you may configure multiple
-    | sources which represent each model / table. These sources may then
-    | be assigned to any extra authentication guards you have defined.
-    |
-    | Supported: "database", "eloquent"
-    |
-    */
-
+    /**
+     * Provedores de Usuário (User Provider)
+     * Todos os drivers de autenticação têm um provedor de usuário (user provider).
+     * Se a aplicação possuir multiplas tabelas de usuário ou entidades (models) deverão ser configuradas multiplas
+     * fontes (sources) que representam cada entidade/tabela. Estas fontes (sources) deverão ser atribuídas a algum
+     * guarda de autenticação extra definido.
+     * Drivers Suportados: "eloquent" e "database".
+     */
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\Usuario::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Resetting Passwords
-    |--------------------------------------------------------------------------
-    |
-    | You may specify multiple password reset configurations if you have more
-    | than one user table or model in the application and you want to have
-    | separate password reset settings based on the specific user types.
-    |
-    | The expire time is the number of minutes that the reset token should be
-    | considered valid. This security feature keeps tokens short-lived so
-    | they have less time to be guessed. You may change this as needed.
-    |
-    */
-
+    /**
+     * Redefinição de Senha
+     * Deverão ser especificados multiplas configuração de redefinição de senha se a aplicação tiver mais de uma tabela
+     * ou entidade de usuário e forem necessárias diferentes configurações de acordo com o tipo do usuário.
+     */
     'passwords' => [
         'users' => [
             'provider' => 'users',
@@ -95,17 +54,10 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Password Confirmation Timeout
-    |--------------------------------------------------------------------------
-    |
-    | Here you may define the amount of seconds before a password confirmation
-    | times out and the user is prompted to re-enter their password via the
-    | confirmation screen. By default, the timeout lasts for three hours.
-    |
-    */
-
+    /**
+     * Expiração da Confirmação de Senha
+     * Aqui é definido a quantidade de segundos antes da confirmação da senha expirar e o usuário ser requisitado a
+     * informar novamente a sua senha através da tela de confirmação.
+     */
     'password_timeout' => 10800,
-
 ];

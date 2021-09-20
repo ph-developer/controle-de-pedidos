@@ -1,19 +1,13 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Cross-Origin Resource Sharing (CORS) Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure your settings for cross-origin resource sharing
-    | or "CORS". This determines what cross-origin operations may execute
-    | in web browsers. You are free to adjust these settings as needed.
-    |
-    | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-    |
-    */
+    /**
+     * Configuração do Cross-Origin Resource Sharing (CORS)
+     * Aqui estão as configurações para o cross-origin resource sharing, ou "CORS". Aqui são determinadas as operações
+     * de cross-origin que serão executadas pelos navegadores web.
+     *
+     * Informações adicionais: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+     */
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
@@ -30,5 +24,4 @@ return [
     'max_age' => 0,
 
     'supports_credentials' => false,
-
 ];

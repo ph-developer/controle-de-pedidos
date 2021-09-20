@@ -1,143 +1,77 @@
 <?php
 
 return [
+    /**
+     * Nome da Aplicação
+     * Este é o nome da aplicação. O nome é usado quando o framework precisa colocar o nome da aplicação em uma
+     * notificação ou outro lugar conforme a necessidade da aplicação ou de seus pacotes.
+     */
+    'name' => 'Controle de Pedidos',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Application Name
-    |--------------------------------------------------------------------------
-    |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
-    |
-    */
-
-    'name' => env('APP_NAME', 'Controle de Pedidos'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Environment
-    |--------------------------------------------------------------------------
-    |
-    | This value determines the "environment" your application is currently
-    | running in. This may determine how you prefer to configure various
-    | services the application utilizes. Set this in your ".env" file.
-    |
-    */
-
+    /**
+     * Ambiente da Aplicação (Environment)
+     * Este valor indica o "ambiente" atual que a aplicação está rodando. Isso determina a configuração de vários
+     * serviços que a aplicação utiliza. Altere isso no arquivo ".env".
+     */
     'env' => env('APP_ENV', 'production'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Application Debug Mode
-    |--------------------------------------------------------------------------
-    |
-    | When your application is in debug mode, detailed error messages with
-    | stack traces will be shown on every error that occurs within your
-    | application. If disabled, a simple generic error page is shown.
-    |
-    */
+    /**
+     * Modo de Debug da Aplicação
+     * Quando a aplicação está no modo de Debug, mensagens detalhadas de erro com "stack traces" serão exibidas em cada
+     * erro que ocorrer com a aplicação. Se estiver desabilitado, um simples e genérico erro será mostrado.
+     */
+    'debug' => (bool)env('APP_DEBUG', false),
 
-    'debug' => (bool) env('APP_DEBUG', false),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application URL
-    |--------------------------------------------------------------------------
-    |
-    | This URL is used by the console to properly generate URLs when using
-    | the Artisan command line tool. You should set this to the root of
-    | your application so that it is used when running Artisan tasks.
-    |
-    */
-
+    /**
+     * Caminho (URL) da aplicação
+     * Essa URL é usada pelo console para gerar corretamente URLs quando o Artisan CLI for utilizado. Você deve atribuir
+     * o valor da raiz (root) da aplicação, então esse valor será utilizado quando tarefas do Artisan forem executadas.
+     */
     'url' => env('APP_URL', 'http://localhost'),
-
     'asset_url' => env('ASSET_URL', null),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Application Timezone
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify the default timezone for your application, which
-    | will be used by the PHP date and date-time functions. We have gone
-    | ahead and set this to a sensible default for you out of the box.
-    |
-    */
-
+    /**
+     * Fuso Horário da Aplicação
+     * Aqui você deve especificar o fuso horário padrão da aplicação, o qual será utilizado pelas funções de data (date)
+     * de data/tempo (datetime) do PHP.
+     */
     'timezone' => 'America/Sao_Paulo',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Application Locale Configuration
-    |--------------------------------------------------------------------------
-    |
-    | The application locale determines the default locale that will be used
-    | by the translation service provider. You are free to set this value
-    | to any of the locales which will be supported by the application.
-    |
-    */
-
+    /**
+     * Localidade da Aplicação
+     * A localidade da aplicação determina o padrão que será utilizado pelo serviço de tradução.
+     */
     'locale' => 'pt-BR',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Application Fallback Locale
-    |--------------------------------------------------------------------------
-    |
-    | The fallback locale determines the locale to use when the current one
-    | is not available. You may change the value to correspond to any of
-    | the language folders that are provided through your application.
-    |
-    */
-
+    /**
+     * Localidade de Fallback da Aplicação
+     * A localidade de fallback determina a localidade que será utilizada quando a localidade padrão não estiver
+     * disponível.
+     */
     'fallback_locale' => 'en',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Faker Locale
-    |--------------------------------------------------------------------------
-    |
-    | This locale will be used by the Faker PHP library when generating fake
-    | data for your database seeds. For example, this will be used to get
-    | localized telephone numbers, street address information and more.
-    |
-    */
-
+    /**
+     * Localidade do Faker
+     * Esta localidade será utilizada pela biblioteca PHP Faker quando forem gerados dados para o semear do banco de
+     * dados. Por exemplo, isso será utilizado para gerar números de telefones locais, endereços e outros.
+     */
     'faker_locale' => 'pt_BR',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Encryption Key
-    |--------------------------------------------------------------------------
-    |
-    | This key is used by the Illuminate encrypter service and should be set
-    | to a random, 32 character string, otherwise these encrypted strings
-    | will not be safe. Please do this before deploying an application!
-    |
-    */
-
+    /**
+     * Chave de Criptografia
+     * Esta chave será utilizada pelo Serviço de Criptografia do Illuminate e deve ser uma string randômica de 32
+     * caracteres. Caso não atenda os requisitos, a aplicação não será segura.
+     */
     'key' => env('APP_KEY'),
-
     'cipher' => 'AES-256-CBC',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Autoloaded Service Providers
-    |--------------------------------------------------------------------------
-    |
-    | The service providers listed here will be automatically loaded on the
-    | request to your application. Feel free to add your own services to
-    | this array to grant expanded functionality to your applications.
-    |
-    */
-
+    /**
+     * Provedores de Serviços Carregados Automaticamente
+     * Os provedores de serviços listados aqui serão automaticamente carregados nas requisições da aplicação.
+     */
     'providers' => [
-
-        /*
-         * Laravel Framework Service Providers...
+        /**
+         * Provedores de Serviços do Framework Laravel.
          */
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
@@ -162,35 +96,20 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
-        /*
-         * Package Service Providers...
+        /**
+         * Provedores de Serviços da Aplicação.
          */
-
-        /*
-         * Application Service Providers...
-         */
-        App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Class Aliases
-    |--------------------------------------------------------------------------
-    |
-    | This array of class aliases will be registered when this application
-    | is started. However, feel free to register as many as you wish as
-    | the aliases are "lazy" loaded so they don't hinder performance.
-    |
-    */
-
+    /**
+     * Apelidos (Aliases) das Classes
+     * Esta lista de apelidos (aliases) serão registradas quando a aplicação inicializar.
+     * Os apelidos (aliases) são carregados tardiamente, então não afetam o desempenho da aplicação.
+     */
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
@@ -218,7 +137,6 @@ return [
         'Queue' => Illuminate\Support\Facades\Queue::class,
         'RateLimiter' => Illuminate\Support\Facades\RateLimiter::class,
         'Redirect' => Illuminate\Support\Facades\Redirect::class,
-        // 'Redis' => Illuminate\Support\Facades\Redis::class,
         'Request' => Illuminate\Support\Facades\Request::class,
         'Response' => Illuminate\Support\Facades\Response::class,
         'Route' => Illuminate\Support\Facades\Route::class,
@@ -229,7 +147,5 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
     ],
-
 ];
